@@ -41,43 +41,25 @@
  * version.
  *
  */
-package org.scilab.forge.jlatexmath.android.geom
+package org.scilab.forge.jlatexmath.android.graphics
 
-import android.graphics.Rect
-import android.graphics.RectF
-import org.scilab.forge.jlatexmath.share.platform.geom.Rectangle2D
+import android.graphics.Bitmap
+import org.scilab.forge.jlatexmath.share.platform.graphics.Image
 
-class Rectangle2DA(
-    private var x: Double,
-    private var y: Double,
-    private var width: Double,
-    private var height: Double,
-) : Rectangle2D {
-
-    override fun getBounds2DX() = this
-    override fun getX() = x
-    override fun getY() = y
+data class ImageA(
+    private val width: Int,
+    private val height: Int,
+) : Image {
     override fun getWidth() = width
     override fun getHeight() = height
-
-    override fun setRectangle(x: Double, y: Double, width: Double, height: Double) {
-        this.x = x
-        this.y = y
-        this.width = width
-        this.height = height
-    }
+    override fun createGraphics2D() = Graphics2DA()
 }
 
-fun Rect.toRectangle2D(): Rectangle2D = Rectangle2DA(
-    x = this.left.toDouble(),
-    y = this.top.toDouble(),
-    width = this.width().toDouble(),
-    height = this.height().toDouble(),
-)
+data class ImageABitmap(
+    val bitmap: Bitmap,
+) : Image {
 
-fun RectF.toRectangle2D(): Rectangle2D = Rectangle2DA(
-    x = this.left.toDouble(),
-    y = this.top.toDouble(),
-    width = this.width().toDouble(),
-    height = this.height().toDouble(),
-)
+    override fun getWidth() = bitmap.width
+    override fun getHeight() = bitmap.height
+    override fun createGraphics2D() = Graphics2DA()
+}

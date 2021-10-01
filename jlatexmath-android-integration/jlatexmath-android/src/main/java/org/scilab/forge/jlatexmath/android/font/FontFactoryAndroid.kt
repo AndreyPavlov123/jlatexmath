@@ -41,43 +41,46 @@
  * version.
  *
  */
-package org.scilab.forge.jlatexmath.android.geom
+package org.scilab.forge.jlatexmath.android.font
 
-import android.graphics.Rect
-import android.graphics.RectF
-import org.scilab.forge.jlatexmath.share.platform.geom.Rectangle2D
+import android.content.Context
+import org.scilab.forge.jlatexmath.share.platform.font.FontFactory
+import org.scilab.forge.jlatexmath.share.platform.font.Font
+import org.scilab.forge.jlatexmath.share.platform.font.TextAttributeProvider
+import org.scilab.forge.jlatexmath.share.platform.font.FontLoader
+import org.scilab.forge.jlatexmath.share.platform.font.FontRenderContext
+import org.scilab.forge.jlatexmath.share.platform.font.TextLayout
 
-class Rectangle2DA(
-    private var x: Double,
-    private var y: Double,
-    private var width: Double,
-    private var height: Double,
-) : Rectangle2D {
+class FontFactoryAndroid(val context: Context) : FontFactory() {
+    override fun createFont(name: String, style: Int, size: Int): Font {
+        return FontA(name, style, size)
+    }
 
-    override fun getBounds2DX() = this
-    override fun getX() = x
-    override fun getY() = y
-    override fun getWidth() = width
-    override fun getHeight() = height
+    override fun createTextLayout(
+        string: String, font: Font,
+        fontRenderContext: FontRenderContext
+    ): TextLayout {
+        return TextLayoutA(
+            string, (font as FontA),
+            (fontRenderContext as FontRenderContextA)
+        )
+    }
 
-    override fun setRectangle(x: Double, y: Double, width: Double, height: Double) {
-        this.x = x
-        this.y = y
-        this.width = width
-        this.height = height
+    override fun createTextAttributeProvider(): TextAttributeProvider {
+        return TextAttributeProviderA()
+    }
+
+    override fun createFontLoader(): FontLoader {
+        return FontLoaderA(context)
+    }
+
+    /**
+     *
+     * // https://github.com/opencollab/jlatexmath/issues/32
+     *
+     * @return scale factor
+     */
+    override fun getFontScaleFactor(): Int {
+        return 1//FontLoader.FONT_SCALE_FACTOR // TODO ANDROID
     }
 }
-
-fun Rect.toRectangle2D(): Rectangle2D = Rectangle2DA(
-    x = this.left.toDouble(),
-    y = this.top.toDouble(),
-    width = this.width().toDouble(),
-    height = this.height().toDouble(),
-)
-
-fun RectF.toRectangle2D(): Rectangle2D = Rectangle2DA(
-    x = this.left.toDouble(),
-    y = this.top.toDouble(),
-    width = this.width().toDouble(),
-    height = this.height().toDouble(),
-)

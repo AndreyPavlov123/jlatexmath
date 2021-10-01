@@ -41,43 +41,15 @@
  * version.
  *
  */
-package org.scilab.forge.jlatexmath.android.geom
+package org.scilab.forge.jlatexmath.android.graphics
 
-import android.graphics.Rect
-import android.graphics.RectF
-import org.scilab.forge.jlatexmath.share.platform.geom.Rectangle2D
+import android.graphics.Matrix
+import org.scilab.forge.jlatexmath.share.platform.graphics.Transform
 
-class Rectangle2DA(
-    private var x: Double,
-    private var y: Double,
-    private var width: Double,
-    private var height: Double,
-) : Rectangle2D {
-
-    override fun getBounds2DX() = this
-    override fun getX() = x
-    override fun getY() = y
-    override fun getWidth() = width
-    override fun getHeight() = height
-
-    override fun setRectangle(x: Double, y: Double, width: Double, height: Double) {
-        this.x = x
-        this.y = y
-        this.width = width
-        this.height = height
-    }
+fun Transform.setAndroidMatrix(output: Matrix) {
+    output.reset()
+    output.setTranslate(this.translateX.toFloat(), this.translateY.toFloat())
+    output.setSkew(this.shearX.toFloat(), this.shearY.toFloat())
+    output.setScale(this.scaleX.toFloat(), this.scaleY.toFloat())
 }
 
-fun Rect.toRectangle2D(): Rectangle2D = Rectangle2DA(
-    x = this.left.toDouble(),
-    y = this.top.toDouble(),
-    width = this.width().toDouble(),
-    height = this.height().toDouble(),
-)
-
-fun RectF.toRectangle2D(): Rectangle2D = Rectangle2DA(
-    x = this.left.toDouble(),
-    y = this.top.toDouble(),
-    width = this.width().toDouble(),
-    height = this.height().toDouble(),
-)

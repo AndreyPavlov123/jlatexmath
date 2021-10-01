@@ -41,43 +41,36 @@
  * version.
  *
  */
-package org.scilab.forge.jlatexmath.android.geom
+package org.scilab.forge.jlatexmath.android.font
 
+import android.graphics.Paint
 import android.graphics.Rect
-import android.graphics.RectF
+import org.scilab.forge.jlatexmath.android.geom.toRectangle2D
+import org.scilab.forge.jlatexmath.android.graphics.Graphics2DA
+import org.scilab.forge.jlatexmath.share.platform.font.TextLayout
 import org.scilab.forge.jlatexmath.share.platform.geom.Rectangle2D
+import org.scilab.forge.jlatexmath.share.platform.graphics.Graphics2DInterface
 
-class Rectangle2DA(
-    private var x: Double,
-    private var y: Double,
-    private var width: Double,
-    private var height: Double,
-) : Rectangle2D {
+class TextLayoutA(
+    private val string: String,
+    font: FontA,
+    fontRenderContext: FontRenderContextA
+) : TextLayout {
+    private val paint = Paint(fontRenderContext.paint).apply {
+        typeface = font.typeface
+        textSize = font.size
+    }
+    private val bufferRect = Rect()
 
-    override fun getBounds2DX() = this
-    override fun getX() = x
-    override fun getY() = y
-    override fun getWidth() = width
-    override fun getHeight() = height
+    override fun getBounds(): Rectangle2D {
+        paint.getTextBounds(string, 0, string.length, bufferRect)
+        return bufferRect.toRectangle2D()
+    }
 
-    override fun setRectangle(x: Double, y: Double, width: Double, height: Double) {
-        this.x = x
-        this.y = y
-        this.width = width
-        this.height = height
+    override fun draw(graphics: Graphics2DInterface, x: Int, y: Int) {
+        // can be GraphicsStub
+        if (graphics is Graphics2DA) {
+            graphics.canvas.drawText(string, 0, string.length, x.toFloat(), y.toFloat(), paint)
+        }
     }
 }
-
-fun Rect.toRectangle2D(): Rectangle2D = Rectangle2DA(
-    x = this.left.toDouble(),
-    y = this.top.toDouble(),
-    width = this.width().toDouble(),
-    height = this.height().toDouble(),
-)
-
-fun RectF.toRectangle2D(): Rectangle2D = Rectangle2DA(
-    x = this.left.toDouble(),
-    y = this.top.toDouble(),
-    width = this.width().toDouble(),
-    height = this.height().toDouble(),
-)

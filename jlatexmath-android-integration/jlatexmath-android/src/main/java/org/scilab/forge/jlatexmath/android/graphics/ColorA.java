@@ -43,40 +43,61 @@
  */
 package org.scilab.forge.jlatexmath.android.graphics;
 
-import java.awt.Color;
+import org.scilab.forge.jlatexmath.share.platform.graphics.Color;
 
-public class ColorD extends Color
-		implements org.scilab.forge.jlatexmath.share.platform.graphics.Color {
+public class ColorA implements Color {
 
-	private static final long serialVersionUID = 1L;
+    public static final Color black = new ColorA(0xFF000000);
+    public static final Color white = new ColorA(0xFFffffff);
+    public static final Color red = new ColorA(0xFFff0000);
+    public static final Color green = new ColorA(0xFF00ff00);
+    public static final Color blue = new ColorA(0xFF0000ff);
+    public static final Color cyan = new ColorA(android.graphics.Color.parseColor("cyan"));
+    public static final Color magenta = new ColorA(android.graphics.Color.parseColor("magenta"));
+    public static final Color yellow = new ColorA(android.graphics.Color.parseColor("yellow"));
 
-	public ColorD(Color color) {
-		this(color.getRed(), color.getGreen(), color.getBlue());
-	}
+    public static final Color BLACK = black;
+    public static final Color RED = red;
 
-	public ColorD(int r, int g, int b) {
-		super(r, g, b);
-	}
+    public static Color decode(String s) {
+        return new ColorA(android.graphics.Color.parseColor(s));
+    }
 
-	public Object getNativeObject() {
-		return this;
-	}
+    private final int color;
 
-	public int getColor() {
-		return getRGB();
-	}
+    public ColorA(int color) {
+        this.color = color;
+    }
 
-	@Override
-	public boolean equals(Object other) {
-		if (other instanceof ColorD) {
-			ColorD c = ((ColorD) other);
-			return c.getRGB() == getRGB() && c.getAlpha() == getAlpha();
-		}
-		return false;
-	}
+    public ColorA(int r, int g, int b) {
+        this(android.graphics.Color.rgb(r, g, b));
+    }
 
-	public static org.scilab.forge.jlatexmath.share.platform.graphics.Color get(
-			Color bgColor) {
-		return bgColor == null ? null : new ColorD(bgColor);
-	}
+    public ColorA(float r, float g, float b) {
+        this(
+                (int) (r * 255 + .5F),
+                (int) (g * 255 + .5F),
+                (int) (b * 255 + .5F)
+        );
+    }
+
+    public int getRed() {
+        return android.graphics.Color.red(color);
+    }
+
+    public int getBlue() {
+        return android.graphics.Color.blue(color);
+    }
+
+    public int getGreen() {
+        return android.graphics.Color.green(color);
+    }
+
+    public int getAlpha() {
+        return 255;
+    }
+
+    public int getColorInt() {
+        return color;
+    }
 }

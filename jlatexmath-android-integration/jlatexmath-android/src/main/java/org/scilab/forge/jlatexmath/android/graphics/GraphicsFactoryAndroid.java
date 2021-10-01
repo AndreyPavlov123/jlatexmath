@@ -43,24 +43,75 @@
  */
 package org.scilab.forge.jlatexmath.android.graphics;
 
+import org.scilab.forge.jlatexmath.share.platform.graphics.BasicStroke;
+import org.scilab.forge.jlatexmath.share.platform.graphics.Color;
+import org.scilab.forge.jlatexmath.share.platform.graphics.GraphicsFactory;
+import org.scilab.forge.jlatexmath.share.platform.graphics.Image;
 import org.scilab.forge.jlatexmath.share.platform.graphics.Stroke;
+import org.scilab.forge.jlatexmath.share.platform.graphics.Transform;
+import org.scilab.forge.jlatexmath.share.platform.graphics.stubs.AffineTransform;
 
-import java.awt.Shape;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 
-public class StrokeD implements Stroke, java.awt.Stroke {
+public class GraphicsFactoryAndroid extends GraphicsFactory {
 
-	private java.awt.Stroke impl;
-
-	public StrokeD(java.awt.Stroke impl) {
-		this.impl = impl;
+	@Override
+	public BasicStroke createBasicStroke(double width, int cap, int join,
+			double miterLimit) {
+		return new BasicStrokeA(width, cap, join, miterLimit);
 	}
 
 	@Override
-	public Shape createStrokedShape(Shape p) {
-		return impl.createStrokedShape(p);
+	public Color createColor(int red, int green, int blue) {
+		return new ColorA(red, green, blue);
 	}
 
-	public java.awt.Stroke getStroke() {
-		return impl;
+	@Override
+	public Image createImage(int width, int height, int type) {
+	    // TODO ANDROID
+	    return new ImageA(width, height);
+	}
+
+	@Override
+	public Transform createTransform() {
+		return new AffineTransform();
+	}
+
+	@Override
+	public Image createImage(String path) {
+	    return null; // TODO ANDROID
+
+//		BufferedImage bimage;
+//
+//		if (path.startsWith("https://")) {
+//			try {
+//				URL url = new URL(path);
+//				bimage = ImageIO.read(url);
+//				return new ImageD(bimage);
+//			} catch (Exception e) {
+//				// MalformedURLException
+//				// IOException
+//				e.printStackTrace();
+//				return null;
+//			}
+//
+//		}
+//
+//		final File f = new File(path);
+//		try {
+//			bimage = ImageIO.read(f);
+//			return new ImageD(bimage);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//			return null;
+//		}
+
+	}
+
+	@Override
+	public Stroke createBasicStroke(double width, float[] dashes) {
+		return new BasicStrokeA(width, dashes);
 	}
 }

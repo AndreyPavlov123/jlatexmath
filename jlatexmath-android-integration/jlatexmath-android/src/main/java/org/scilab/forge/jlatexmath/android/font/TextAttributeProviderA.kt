@@ -41,43 +41,17 @@
  * version.
  *
  */
-package org.scilab.forge.jlatexmath.android.geom
+package org.scilab.forge.jlatexmath.android.font
 
-import android.graphics.Rect
-import android.graphics.RectF
-import org.scilab.forge.jlatexmath.share.platform.geom.Rectangle2D
+import org.scilab.forge.jlatexmath.share.platform.font.TextAttribute
+import org.scilab.forge.jlatexmath.share.platform.font.TextAttributeProvider
 
-class Rectangle2DA(
-    private var x: Double,
-    private var y: Double,
-    private var width: Double,
-    private var height: Double,
-) : Rectangle2D {
+class TextAttributeProviderA : TextAttributeProvider {
+    override fun getTextAttribute(name: String): TextAttribute? {
+        return null
+    }
 
-    override fun getBounds2DX() = this
-    override fun getX() = x
-    override fun getY() = y
-    override fun getWidth() = width
-    override fun getHeight() = height
-
-    override fun setRectangle(x: Double, y: Double, width: Double, height: Double) {
-        this.x = x
-        this.y = y
-        this.width = width
-        this.height = height
+    override fun getTextAttributeValue(name: String): Int? {
+        return null
     }
 }
-
-fun Rect.toRectangle2D(): Rectangle2D = Rectangle2DA(
-    x = this.left.toDouble(),
-    y = this.top.toDouble(),
-    width = this.width().toDouble(),
-    height = this.height().toDouble(),
-)
-
-fun RectF.toRectangle2D(): Rectangle2D = Rectangle2DA(
-    x = this.left.toDouble(),
-    y = this.top.toDouble(),
-    width = this.width().toDouble(),
-    height = this.height().toDouble(),
-)

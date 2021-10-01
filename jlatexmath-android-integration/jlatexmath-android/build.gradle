@@ -32,11 +32,15 @@ android {
 
     sourceSets {
         main {
+            //assets.srcDirs = ['../client.private','../server.public']
             java {
                 srcDir '../../jlatexmath/src/main/java'
                 srcDir 'src/main/java'
                 exclude 'org/scilab/forge/jlatexmath/desktop'
                 exclude 'org/scilab/forge/jlatexmath/web'
+            }
+            assets {
+                srcDir '../../jlatexmath/src/main/resources'
             }
         }
     }

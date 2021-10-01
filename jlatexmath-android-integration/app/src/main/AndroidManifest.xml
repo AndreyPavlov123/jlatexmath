@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="org.scilab.forge.jlatexmath.android"
+<manifest package="org.scilab.forge.jlatexmath.android.test.app"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:name="org.scilab.forge.jlatexmath.android.App"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Jlatexmathandroidintegration">
         <activity
-            android:name=".MainActivity"
+            android:name="org.scilab.forge.jlatexmath.android.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -132,7 +132,7 @@ public class TeXFormula {
 	public Atom root = null;
 
 	// the current text style
-	private int textStyle = TextStyle.NONE;
+	protected int textStyle = TextStyle.NONE;
 
 	public boolean isColored = false;
 
@@ -286,7 +286,7 @@ public class TeXFormula {
 		}
 	}
 
-	private TeXFont createFont(final double size, final int type) {
+	protected TeXFont createFont(final double size, final int type) {
 		final TeXFont dtf = new TeXFont(size);
 		if (type == TeXFont.SERIF) {
 			dtf.setSs(false);

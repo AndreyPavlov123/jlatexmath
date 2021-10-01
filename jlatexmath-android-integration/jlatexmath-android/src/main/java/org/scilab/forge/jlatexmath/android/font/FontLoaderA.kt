@@ -41,43 +41,41 @@
  * version.
  *
  */
-package org.scilab.forge.jlatexmath.android.geom
+package org.scilab.forge.jlatexmath.android.font
 
-import android.graphics.Rect
-import android.graphics.RectF
-import org.scilab.forge.jlatexmath.share.platform.geom.Rectangle2D
+import android.content.Context
+import android.graphics.Typeface
+import org.scilab.forge.jlatexmath.share.exception.ResourceParseException
+import org.scilab.forge.jlatexmath.share.platform.FactoryProvider
+import org.scilab.forge.jlatexmath.share.platform.font.Font
+import org.scilab.forge.jlatexmath.share.platform.font.FontLoader
+import java.io.InputStream
 
-class Rectangle2DA(
-    private var x: Double,
-    private var y: Double,
-    private var width: Double,
-    private var height: Double,
-) : Rectangle2D {
+class FontLoaderA(val context: Context) : FontLoader {
 
-    override fun getBounds2DX() = this
-    override fun getX() = x
-    override fun getY() = y
-    override fun getWidth() = width
-    override fun getHeight() = height
+    @Throws(ResourceParseException::class)
+    override fun loadFont(name: String): Font {
+        FactoryProvider.debugS("loadFont():$name")
+        return try {
+            val typeface = loadTypeface(name)
+            FontA(typeface, 1f)//, FontLoader.FONT_SCALE_FACTOR.toFloat()) // TODO ANDROID
+        } catch (e: Throwable) {
+            throw ResourceParseException(
+                "FontLoader" + ": FontLoader '"
+                        + name + "'. Error message: " + e.message
+            )
+        }
+    }
 
-    override fun setRectangle(x: Double, y: Double, width: Double, height: Double) {
-        this.x = x
-        this.y = y
-        this.width = width
-        this.height = height
+    private fun getResourceAsStream(path: String): InputStream {
+        return context.assets.open(BASE + path)
+    }
+
+    private fun loadTypeface(path: String): Typeface {
+        return Typeface.createFromAsset(context.assets, BASE + path)
+    }
+
+    companion object {
+        private const val BASE = "org/scilab/forge/jlatexmath/"
     }
 }
-
-fun Rect.toRectangle2D(): Rectangle2D = Rectangle2DA(
-    x = this.left.toDouble(),
-    y = this.top.toDouble(),
-    width = this.width().toDouble(),
-    height = this.height().toDouble(),
-)
-
-fun RectF.toRectangle2D(): Rectangle2D = Rectangle2DA(
-    x = this.left.toDouble(),
-    y = this.top.toDouble(),
-    width = this.width().toDouble(),
-    height = this.height().toDouble(),
-)
